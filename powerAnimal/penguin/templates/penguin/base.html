@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            margin: 0;
+            padding-bottom: 100px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            position: relative;
+            color: rgba(255, 255, 255, 0.918);
+            background-color: rgb(31, 41, 46)
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            height: 100px;
+        }
+
+        footer a {
+            color: rgb(241, 200, 225);
+        }
+
+        a {
+            color: white;
+        }
+
+        .page-link:hover {
+            color: #141c2ff2;
+        }
+
+        .page-link {
+            background-color: rgb(80, 76, 76);
+            color: rgb(255, 255, 255)
+        }
+    </style>
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+    <div class="bgimg">
+        <!-- nav bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-dark">
+            <a class="navbar-brand" href="#">Penguin</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    {% for product in plst %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{product.0.category}}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for i in product|slice:"0:5" %}
+                            <a class="dropdown-item" href="/view/{{i.id}}">{{i.product_name}}</a>
+                            {%endfor%}
+                            <a class="dropdown-item lead" href="/viewall/{{product.0.category}}">All
+                                {{product.0.category}}</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+            <form method="GET" action="/search/" class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search"
+                    id="search">
+                <button class="btn btn-outline-success my-2 mr-1 my-sm-0" type="submit">Search</button>
+            </form>
+            {%if user.is_authenticated%}
+            <a class="btn btn-outline-primary mx-1" href="{% url 'logout' %}" type="button">Logout</a>
+            {% else %}
+            <a class="btn btn-outline-primary mx-1" href="{% url 'login' %}" type="button">Login</a>
+            {% endif %}
+            <a class="btn btn btn-info mx-1" href="{% url 'library' %}" type="button">My Library</a>
+        </nav>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {%endfor%}
+        {% endif %}
+
+        {% block body %}{% endblock %}
+        {% if is_paginated %}
+        <nav class="container">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
+                    <a class="page-link" href="?page={{num}}">{{num}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">Last</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        <footer class="container-fluid footer mt-3 py-3 bg-dark" style="text-align: center; ">
+            <a href="#"><i class="fa fa-facebook-official"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-snapchat"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <p class="text-muted">© 2020 : Penguin Media Platform </p>
+        </footer>
+
+        <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+
+</body>
+
+</html>

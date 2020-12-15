@@ -1,0 +1,56 @@
+{% extends 'penguin/base.html' %}
+{% block title %} My Library {% endblock %}
+{% block css %}
+<style>
+    .card {
+        background-color: transparent;
+    }
+
+    .card-body {
+        padding: 0.40rem;
+    }
+
+    .card-text {
+        height: 50px;
+    }
+
+    .card-columns {
+        display: inline-block;
+
+    }
+
+    .container {
+        padding: 5px;
+    }
+
+
+
+    .card-columns img {
+        max-width: 355px;
+        height: 24rem;
+    }
+</style>
+
+{% endblock %}
+{% block body %}
+<div class="container my-3">
+    {% if items %}
+    <div class="card-columns">
+        {% for item in items %}
+        <a href="">
+            <div class="card">
+                <img class="card-img-top" src="/media/{{item.image}}" alt="Card image cap">
+                <div class="card-body">
+
+                    <h5 class="card-title" style="text-align: center;">{{item.product_name}}</h5>
+
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <h3>Its empty here !</h3>
+    {% endif %}
+</div>
+{% endblock %}

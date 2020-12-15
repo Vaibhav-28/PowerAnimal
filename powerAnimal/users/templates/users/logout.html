@@ -1,0 +1,12 @@
+{% extends 'penguin/base.html' %}
+{% block title %} Logged out {% endblock %}
+{% block body %}
+<div class="container">
+    <h2>Logged out successfully!</h2>
+    <div class="border-top">
+        <small class="text-muted ">
+            Login again <a href="{% url 'login' %}">Login</a>
+        </small>
+    </div>
+</div>
+{% endblock %}
