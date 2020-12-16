@@ -1,5 +1,5 @@
 # PowerAnimal
-Depoyed at pyhtonanywhere : link - https://vaibhav2828.pythonanywhere.com/
+Depoyed at pyhtonanywhere; link - https://vaibhav2828.pythonanywhere.com/
 
 Django website (as a beginner) , named "Penguin" to download/buy media(games, movies, software and manga) with following added functionalities:
 1. Search
