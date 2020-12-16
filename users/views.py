@@ -33,7 +33,7 @@ class UserLibrary(LoginRequiredMixin, ListView):
     model = User
     template_name = "users/library.html"
     context_object_name = "items"
-    paginate_by = 9
+    paginate_by = 6
 
     def get_queryset(self):
         u = self.request.user

@@ -55,7 +55,7 @@ class ViewAll(ListView):
     model = User
     template_name = "penguin/viewall.html"
     context_object_name = "items"
-    paginate_by = 9
+    paginate_by = 6
 
     def get_queryset(self):
         uitems = Product.objects.filter(category=self.kwargs["cat"])
