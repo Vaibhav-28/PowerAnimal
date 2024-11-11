@@ -11,7 +11,7 @@
     }
 
     .card-text {
-        height: 50px;
+        height: 70px;
     }
 
     .col-xs-4 {
@@ -44,6 +44,11 @@
     .carousel-control-next {
         right: -160px;
     }
+    .fixed-image {
+        height: 350px;
+        object-fit: fill;
+        width: 100%;
+    }
 </style>
 
 {% endblock %}
@@ -53,39 +58,43 @@
 <!-- slide product -->
 <div class="container">
     {% for product in plst %}
-    <h2 class="my-3">Featured {{product.0.category}}</h2>
-    <div id="demo{{forloop.counter}}" class="carousel slide" data-ride="carousel">
-        <div class="container carousel-inner">
+    <h2 class="my-3">Featured {{ product.0.category }}</h2>
+    <div id="demo{{ forloop.counter }}" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
             <div class="carousel-item active">
-                {% for i in product|slice:"0:9" %}
-                <div class="col-xs-4">
-                    <div class="card" style="border:2px solid black; width: 18rem;">
-                        <img src='/media/{{i.image}}' class="card-img-top" alt="...">
-                        <div class="card-body ">
-                            <h5 class="card-title">{{i.product_name}}</h5>
-                            <p class="card-text">{{i.desc}}</p>
-                            <a href="/view/{{i.id}}"><button id="p{{i.id}}"
-                                    class="btn btn-secondary">Download</button></a>
+                <div class="row justify-content-center">
+                    {% for i in product|slice:"0:9" %}
+                    <div class="col-md-4 d-flex justify-content-center mb-4">
+                        <div class="card" style="border: 2px solid black; width: 18rem;">
+                            <img src='/media/{{ i.image }}' class="card-img-top fixed-image" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.product_name }}</h5>
+                                <p class="card-text">{{ i.desc }}</p>
+                                <a href="/view/{{ i.id }}">
+                                    <button id="p{{ i.id }}" class="btn btn-secondary">Download</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
+                    {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
                 </div>
-                {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
             </div>
             <div class="carousel-item">
-                {% endif %}
-
-                {% endfor %}
+                <div class="row justify-content-center">
+                    {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
+        <a class="carousel-control-prev" href="#demo{{ forloop.counter }}" data-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </a>
-        <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
+        <a class="carousel-control-next" href="#demo{{ forloop.counter }}" data-slide="next">
             <span class="carousel-control-next-icon"></span>
         </a>
     </div>
-    <a href="/viewall/{{product.0.category}}" style="text-decoration: underline;">View all {{product.0.category}}</a>
+    <a href="/viewall/{{ product.0.category }}" style="text-decoration: underline;">View all {{ product.0.category }}</a>
     {% endfor %}
-
 </div>
+
 {% endblock %}
